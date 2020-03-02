@@ -1,4 +1,5 @@
 raws/*
 raws_uncompressed/*
 scrubbed_uncompressed/*
+csv_uncompressed/*
 json_uncompressed/*

@@ -1,3 +1,5 @@
+# TODO rewrite to produce json from the csv files
+
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 import sys
@@ -43,6 +45,8 @@ def makeCourse(row):
         profs[0] = profs[0][:-1]
         profs[1] = profs[1][1:]
         profs = [p.strip() for p in ''.join(profs).split(',')]
+        # turn multiple spaces into 1
+        profs = [' '.join(n.strip() for n in p.split()) for p in profs]
     except: # profs TBA
         assert row[19].contents[0].contents[0].strip() == 'TBA'
         profs = []
@@ -61,22 +65,10 @@ def makeCourse(row):
         assert row[21].contents[0].contents[0].strip() == 'TBA'
         location = None
     
-    # simpler data
-    
-    # "select" column, could be empty
-    try: select = row[0].contents[0].contents[0].strip()
-    except: select = None
-    # crn
-    try:
-        crn = row[1].contents[0].contents[0].strip()
-        crn = int(crn)
-        if type(crn) != int: print('ERROR:crn not int');quit()
-    except: crn = None
-    
     # build dictionary object
     return {
-    'select':   select, # within abbr tag
-    'crn':      crn, # within a tag
+    'select':   row[0].contents[0].contents[0].strip(), # within abbr tag
+    'crn':      int(row[1].contents[0].contents[0].strip()), # within a tag
     'code':     row[2].contents[0].strip(),
     'number':   int(row[3].contents[0]),
     'section':  row[4].contents[0].strip(),
@@ -126,8 +118,8 @@ for file in os.listdir(inDir):
         elif row[0].name == 'th': # skip header rows
             continue
         else: # course row
-            currentCourses.append(makeCourse(row))
-            #except:print(file);print('\n'.join(str(d)for d in row));quit()
+            try:currentCourses.append(makeCourse(row))
+            except:print(file);print('\n'.join(str(d)for d in row));quit()
             # TODO issue is courses spanning multiple rows
     
     assert not (currentGroup in jsonData)
