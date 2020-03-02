@@ -11,7 +11,7 @@ if outDir[-1] != '/': outDir += '/'
 for file in os.listdir(inDir):
     
     # reduce page to just the data table
-    bs4page = BeautifulSoup(open(inDir+file).read(),'html.parser')
+    bs4page = BeautifulSoup(open(inDir+file,'rb').read(),'html.parser')
     dataTable = bs4page.find_all('table',class_='datadisplaytable')[0]
     html = bs4page.find_all('html')[0]
     html.contents = ['\n',dataTable,'\n']
