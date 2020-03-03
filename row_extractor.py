@@ -14,7 +14,7 @@ def colspan(c): return int(c['colspan']) if c.has_attr('colspan') else 1
 
 def extractText(item):
     if type(item) == NavigableString: return str(item)
-    return ''.join(extractText(i) for i in item.contents)
+    return ''.join(extractText(i) for i in item.contents).strip()
 
 for file in os.listdir(inDir):
     
