@@ -7,17 +7,49 @@ saving pages to use
 2. pick a semester, select all subjects, and search for sections
 3. save the page (html only)
 
-processing pages
+extracting rows as csv
 
 1. place raw pages in a directory and make a new directory for scrubbed output
-2. run ``python3 page_scrubber.py <input dir> <output dir>``
+2. run ``python3 page_scrubber.py <raws dir> <scrubbed dir>``
+3. run ``python3 row_extractor.py <scrubbed dir> <csv dir>``
 
-converting to json data
+converting to json data (not done yet)
 
-1. use directory of raw pages from previous step
-2. run ``python3 page_to_json.py <input dir> <output dir>``
+1. use directory of csv files from previous step
 
-schema for json data
+schema for csv data: length 1 rows = subject headers, other rows = 23 columns
+
+1. Select (registration availability, C or NR for old data)
+2. CRN (class registration number, 5 digits)
+3. Subj (subject code, 4 capital letters)
+4. Crse (course number, 4 digits)
+5. Sec (course section, 2 digits)
+6. Cmp (campus, H or T for Hartford or Troy)
+7. Cred (credits, floating point, may be a range)
+8. Title (course title)
+9. Days (course meeting day(s), MTWRF)
+10. Time (course meeting time, a range with am or pm)
+11. Cap (section capacity)
+12. Act (section actual)
+13. Rem (section remaining)
+14. WL Cap (waitlist capacity)
+15. WL Act (waitlist actual)
+16. WL Rem (waitlist remaining)
+17. XL Cap (crosslist capacity)
+18. XL Act (crosslist actual)
+19. XL Rem (crosslist remaining)
+20. Instructor (instructors separated by comma, primary (first) ends with "(P)")
+21. Date (MM/DD) (date range for course)
+22. Location (building followed by room)
+23. Attribute (note about course, may be empty)
+
+schema for csv notes:
+
+1. courses map span multiple rows for meeting times on different days that are
+at different times, possibly with different instructors or rooms, date range
+should be the same
+
+schema for json data (not finalized)
 
 - file contents (root level of the json data)  
     ``{``  
